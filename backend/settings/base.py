@@ -132,6 +132,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # email settings
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
