@@ -8,7 +8,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import status
 
 from accounts.models import Profile
-from accounts.models import Education
+from accounts.models import Education, Faculty, University
 from accounts.models import UserFollow
 
 User = get_user_model()
@@ -203,3 +203,18 @@ class UserFollowSerializer(serializers.ModelSerializer):
         except UserFollow.DoesNotExist:
             return attrs
 
+
+class FacultySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Faculty
+        fields = [
+            'id', 'faculty_name', 'fac_short_form'
+        ]
+
+
+class UniversitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = University
+        fields = [
+            'id', 'university_name', 'uni_short_form'
+        ]
