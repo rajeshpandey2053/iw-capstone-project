@@ -29,5 +29,5 @@ urlpatterns = [
     path('login', CustomObtainAuthToken.as_view(), name='user-login'),
     path('user/', include(user_url)),
     path('faculty', FacultyAPIView.as_view(), name='faculty'),
-    path('faculty', UniversityAPIView.as_view(), name='university')
+    path('university', UniversityAPIView.as_view(), name='university')
 ]
