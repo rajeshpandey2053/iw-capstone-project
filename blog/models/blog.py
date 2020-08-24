@@ -32,7 +32,7 @@ class Blog(models.Model):
     status = models.CharField(max_length=10, default='Draft',
                               choices=STATUS_CHOICES)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    featured_image = models.ImageField()
+    featured_image = models.ImageField(upload_to='images/')
     tags = models.ManyToManyField(Tag)
     stars_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
