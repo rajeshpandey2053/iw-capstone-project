@@ -32,6 +32,11 @@
 | ------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | BackEnd | <p align="center"><img src="./assets/python.jpg" width="100" height="100"> <br />Python</p> | <p align="center"><img src="./assets/Django.jpg" width="100" height="100"> <br />Django</p> | <p align="center"><img src="./assets/Postgresql.png" width="100" height="100"> <br />Postgresql</p> | <p align="center"><img src="./assets/AWS.png" width="100" height="100"> <br />AWS</p> | <p align="center"><img src="./assets/REST.png" width="100" height="100"> <br />REST API</p> |
 
+# Overview
+
+<img  src="./assets/hamronoteapi.png" align="center" alt="Hamro Notes
+ " />
+
 # Installation
 
 ## Method 1
@@ -68,10 +73,10 @@ $ pip install -r requirements.txt
 $ cp .env.example .env
 ```
 
-Now, edit .env to contain 
+Now, edit .env to contain
 `DEBUG = True`
-`SECRET_KEY = <your_key>` 
-`EMAIL_USE_TLS = True` 
+`SECRET_KEY = <your_key>`
+`EMAIL_USE_TLS = True`
 `EMAIL_HOST = smtp.gmail.com`
 `EMAIL_HOST_USER = <your_gmail>`
 `EMAIL_HOST_PASSWORD = <your_gmail_password>`
