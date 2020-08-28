@@ -57,7 +57,7 @@ class UserDetail(RetrieveAPIView):
             'followers': followers,
             'following': following,
         }
-        return Response(context, status=status.HTTP_302_FOUND)
+        return Response(context, status=status.HTTP_200_OK)
 
 
 class UserUpdate(UpdateAPIView):
