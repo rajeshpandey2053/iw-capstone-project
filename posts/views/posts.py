@@ -2,13 +2,14 @@ import uuid
 
 from django.utils.text import slugify
 from rest_framework.generics import (ListAPIView, CreateAPIView,
-                                     RetrieveUpdateAPIView,
+                                     UpdateAPIView,
                                      RetrieveDestroyAPIView)
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-
-
+from rest_framework.decorators import (api_view,
+                                       authentication_classes,
+                                       permission_classes
+                                       )
 from ..models import Post
 from ..serializers import (PostSerializer, CreatePostSerializer)
 from ..paginations import CustomPostsPagination
@@ -23,8 +24,8 @@ class ListPosts(ListAPIView):
     http_method_names = [u'get', ]
     serializer_class = PostSerializer
     pagination_class = CustomPostsPagination
-    # authentication_classes = [TokenAuthentication, ]
-    # permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         return Post.objects.all()
@@ -56,7 +57,7 @@ class CreatePost(CreateAPIView):
                         headers=headers)
 
 
-class UpdatePost(RetrieveUpdateAPIView):
+class UpdatePost(UpdateAPIView):
     """
     Retrieves and updates a new post with post_slug as url kwarg.
     """
@@ -75,6 +76,7 @@ class RetrieveDeletePost(RetrieveDestroyAPIView):
     Deletes the post with matching post_slug in url kwarg.
     """
     lookup_field = 'post_slug'
+    lookup_url_kwarg = 'post_slug'
     serializer_class = PostSerializer
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
@@ -84,6 +86,8 @@ class RetrieveDeletePost(RetrieveDestroyAPIView):
 
 
 @api_view(['POST'])
+@authentication_classes([TokenAuthentication, ])
+@permission_classes([IsAuthenticated, ])
 def like_post(request, post_slug, action):
     print(request.user)
     post = Post.objects.get(post_slug=post_slug)
