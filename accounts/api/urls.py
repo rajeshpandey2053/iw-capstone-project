@@ -6,7 +6,7 @@ from .views import (UserRegistrationView,
                     PasswordTokenCheckAPI, 
                     RequestPasswordResetEmail, 
                     SetNewPasswordAPIView,UserRegistrationView, activate, UserLogoutView,
-                    UserFollowAPIView
+                    UserFollowAPIView, FacultyAPIView, UniversityAPIView
                     )
 from .authtoken_views import CustomObtainAuthToken
 
@@ -27,5 +27,7 @@ user_url = [
 urlpatterns = [
     path('register', UserRegistrationView.as_view(), name='user-register'),
     path('login', CustomObtainAuthToken.as_view(), name='user-login'),
-    path('user/', include(user_url))
+    path('user/', include(user_url)),
+    path('faculty', FacultyAPIView.as_view(), name='faculty'),
+    path('university', UniversityAPIView.as_view(), name='university')
 ]

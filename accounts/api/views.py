@@ -14,7 +14,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.generics import GenericAPIView
 from rest_framework.generics import (CreateAPIView,
                                      RetrieveAPIView,
-                                     UpdateAPIView, DestroyAPIView, ListCreateAPIView)
+                                     UpdateAPIView, DestroyAPIView, ListCreateAPIView,
+                                     ListAPIView)
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
@@ -25,10 +26,11 @@ from .serializers import (UserRegisterSerializer,
                           UserUpdateSerializer,
                           ChangePasswordSerializer,
                           ResetPasswordEmailRequestSerializer,
-                          SetNewPasswordSerializer, UserFollowSerializer
+                          SetNewPasswordSerializer, UserFollowSerializer,
+                          FacultySerializer, UniversitySerializer
                           )
 from .tokens import account_activation_token
-from accounts.models import UserFollow
+from accounts.models import UserFollow, Faculty, University
 
 User = get_user_model()
 
@@ -285,3 +287,13 @@ class UserFollowAPIView(ListCreateAPIView):
             'message': 'success',
         }
         return Response(context, status.HTTP_201_CREATED)
+
+
+class FacultyAPIView(ListAPIView):
+    queryset = Faculty.objects.all()
+    serializer_class = FacultySerializer
+
+
+class UniversityAPIView(ListAPIView):
+    queryset = University.objects.all()
+    serializer_class = UniversitySerializer

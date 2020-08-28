@@ -11,3 +11,18 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model =  Comment
         fields = '__all__'
+
+class CreateBlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blog
+        fields = '__all__'
+
+class CreateCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = [
+            'name',
+            'blog',
+            'email',
+            'message',
+        ]

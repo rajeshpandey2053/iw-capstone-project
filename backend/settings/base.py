@@ -65,6 +65,13 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
@@ -130,8 +137,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 AUTH_USER_MODEL = 'accounts.User'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # email settings
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
@@ -140,10 +150,11 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT')
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 '''
 CSRF_COOKIE_SECURE = True #to avoid transmitting the CSRF cookie over HTTP accidentally.
 SESSION_COOKIE_SECURE = True #to avoid transmitting the session cookie over HTTP accidentally.
-
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_SSL_REDIRECT = True

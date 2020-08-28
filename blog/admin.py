@@ -1,8 +1,17 @@
 from django.contrib import admin
-from .models import Category, Tag, Blog, Comment, Subscriber
+from .models import *
 
-admin.site.register(Category)
-admin.site.register(Tag)
-admin.site.register(Blog)
-admin.site.register(Comment)
-admin.site.register(Subscriber)
+
+blog_models = [
+    blog.Category,
+    blog.Tag,
+    blog.Blog,
+]
+
+comment_models = [
+    comment.Comment,
+    subscriber.Subscriber,
+]
+
+admin.site.register(blog_models)
+admin.site.register(comment_models)

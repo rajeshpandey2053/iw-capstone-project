@@ -116,7 +116,7 @@ class UserTests(APITestCase):
         """
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.get_token())
         response = self.client.get(reverse("account:user-profile"))
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data.get('user').get('email'), "testuser@gmail.com")
 
     def test_user_update(self):
