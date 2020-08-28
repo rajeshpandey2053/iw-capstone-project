@@ -65,6 +65,13 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
@@ -130,8 +137,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 AUTH_USER_MODEL = 'accounts.User'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # email settings
