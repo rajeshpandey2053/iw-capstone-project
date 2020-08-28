@@ -18,7 +18,8 @@ urlpatterns = [
     path('v1/post/<str:post_slug>/<str:action>/', views.like_post,
          name='like_unlike_post'),
     # comments
-    path('v1/comment/list/', views.ListComments.as_view(), name='comment_list'),
+    path('v1/comment/<str:post_slug>/list/',
+         views.ListComments.as_view(), name='comment_list'),
     path('v1/comment/create/', views.CreateComment.as_view(),
          name='comment_create'),
     path('v1/comment/<str:pk>/update/', views.UpdateComment.as_view(),

@@ -2,18 +2,23 @@ from .posts import *
 from ..models import Comment
 from ..serializers import CommentSerializer, CreateCommentSerializer
 from ..paginations import CustomCommentsPagination
+from ..models import Post
 
 
 class ListComments(ListAPIView):
     """
-    This view returns gives the five comments at a time.
+    This view returns gives the five comments at a time of respective posts
     """
     http_method_names = [u'get', ]
+    lookup_field = 'post_slug'
+    lookup_url_kwarg = 'post_slug'
     serializer_class = CommentSerializer
     pagination_class = CustomCommentsPagination
 
     def get_queryset(self):
-        return Comment.objects.all()
+        post = Post.objects.get(post_slug=self.kwargs[self.lookup_url_kwarg])
+        print(post)
+        return Comment.objects.filter(post=post)
 
 
 class CreateComment(CreateAPIView):

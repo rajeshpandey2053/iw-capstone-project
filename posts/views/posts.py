@@ -75,6 +75,7 @@ class RetrieveDeletePost(RetrieveDestroyAPIView):
 
 @api_view(['POST'])
 def like_post(request, post_slug, action):
+    print(request.user)
     post = Post.objects.get(post_slug=post_slug)
     try:
         print(post)
@@ -85,12 +86,14 @@ def like_post(request, post_slug, action):
     if request.method == 'POST':
         if action == 'like':
             post.stars_count += 1
+            print(post.stars_count)
             post.save()
         elif action == 'unlike':
             post.stars_count -= 1
             if post.stars_count <= 0:
                 post.stars_count = 0
             post.save()
+            print(post.stars_count)
         else:
             return Response({'error': f'Invalid  {action}!!'},
                             status=status.HTTP_400_BAD_REQUEST)

@@ -55,7 +55,7 @@ class UserDetail(RetrieveAPIView):
             'followers': followers,
             'following': following,
         }
-        return Response(context, status=status.HTTP_302_FOUND)
+        return Response(context, status=status.HTTP_200_OK)
 
 
 class UserUpdate(UpdateAPIView):
@@ -72,7 +72,8 @@ class UserUpdate(UpdateAPIView):
 
         partial = kwargs.pop('partial', False)
         instance = User.objects.get(id=request.user.id)
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial)
         serializer.profile_pic = request.FILES.get('profile_pic')
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
