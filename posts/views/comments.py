@@ -3,6 +3,8 @@ from ..models import Comment
 from ..serializers import CommentSerializer, CreateCommentSerializer
 from ..paginations import CustomCommentsPagination
 from ..models import Post
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class ListComments(ListAPIView):
@@ -25,6 +27,8 @@ class CreateComment(CreateAPIView):
     """
     This creates a new comment and saves to the database.
     """
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
     serializer_class = CreateCommentSerializer
 
 
@@ -32,6 +36,8 @@ class UpdateComment(RetrieveUpdateAPIView):
     """
     This should update the comment.
     """
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
     serializer_class = CreateCommentSerializer
 
     def get_queryset(self):
@@ -42,6 +48,8 @@ class RetrieveDeleteComment(RetrieveDestroyAPIView):
     """
     This retrieves the comment with get request and deletes with delete request.
     """
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
     serializer_class = CommentSerializer
 
     def get_queryset(self):

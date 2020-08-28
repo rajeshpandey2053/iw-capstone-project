@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
+from accounts.models.education import Education
 USER = get_user_model()
 
 
@@ -10,6 +10,8 @@ class Post(models.Model):
     user = models.ForeignKey(USER, on_delete=models.CASCADE)
     post_slug = models.SlugField(unique=True)
     caption = models.TextField()
+    education = models.ForeignKey(
+        Education, on_delete=models.PROTECT)
     file = models.FileField(upload_to='posts/files/', blank=True, null=True)
     stars_count = models.IntegerField(default=0)
 

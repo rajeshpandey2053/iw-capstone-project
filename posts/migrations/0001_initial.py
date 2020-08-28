@@ -11,20 +11,26 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('accounts', '0003_merge_20200818_0143'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Post',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('posted_at', models.DateTimeField(auto_now_add=True)),
                 ('modified_at', models.DateTimeField(auto_now=True)),
                 ('post_slug', models.SlugField(unique=True)),
                 ('caption', models.TextField()),
-                ('file', models.FileField(blank=True, null=True, upload_to='posts/files/')),
+                ('file', models.FileField(blank=True,
+                                          null=True, upload_to='posts/files/')),
                 ('stars_count', models.IntegerField(default=0)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('education', models.ForeignKey(
+                    on_delete=django.db.models.deletion.PROTECT, to='accounts.education')),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ('-posted_at',),
@@ -33,13 +39,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Comment',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('commented_at', models.DateTimeField(auto_now_add=True)),
                 ('comment_modified_at', models.DateTimeField(auto_now=True)),
                 ('comment_description', models.TextField()),
                 ('stars_count', models.IntegerField(default=0)),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='posts.post')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('post', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='posts.post')),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ('-commented_at',),

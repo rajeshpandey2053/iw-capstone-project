@@ -12,6 +12,8 @@ from rest_framework.decorators import api_view
 from ..models import Post
 from ..serializers import (PostSerializer, CreatePostSerializer)
 from ..paginations import CustomPostsPagination
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class ListPosts(ListAPIView):
@@ -21,6 +23,8 @@ class ListPosts(ListAPIView):
     http_method_names = [u'get', ]
     serializer_class = PostSerializer
     pagination_class = CustomPostsPagination
+    # authentication_classes = [TokenAuthentication, ]
+    # permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         return Post.objects.all()
@@ -31,6 +35,8 @@ class CreatePost(CreateAPIView):
     Creates a New Post
     """
     serializer_class = CreatePostSerializer
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
 
     def create(self, request, *args, **kwargs):
         """
@@ -57,6 +63,8 @@ class UpdatePost(RetrieveUpdateAPIView):
     lookup_field = 'post_slug'
     lookup_url_kwarg = 'post_slug'
     serializer_class = CreatePostSerializer
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         return Post.objects.all()
@@ -68,6 +76,8 @@ class RetrieveDeletePost(RetrieveDestroyAPIView):
     """
     lookup_field = 'post_slug'
     serializer_class = PostSerializer
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         return Post.objects.all()
