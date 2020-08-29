@@ -2,6 +2,7 @@ import uuid
 
 from django.utils.text import slugify
 from rest_framework.generics import (ListAPIView, CreateAPIView,
+                                     RetrieveUpdateAPIView,
                                      UpdateAPIView,
                                      RetrieveDestroyAPIView)
 from rest_framework import status
