@@ -45,11 +45,13 @@ class CreatePost(CreateAPIView):
         The original function overridden so that the post slug is generated
         automatically and is unique.
         """
+        import json
         data = request.data.copy()
         # copying the dict because the original QueryDict is immutable.
-
+        print("purano data", data)
         data[
             'post_slug'] = f'{slugify(data["caption"][:10])}-{uuid.uuid4().hex}'
+        print(data)
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -87,8 +89,8 @@ class RetrieveDeletePost(RetrieveDestroyAPIView):
 
 
 @api_view(['POST'])
-@authentication_classes([TokenAuthentication, ])
-@permission_classes([IsAuthenticated, ])
+# @authentication_classes([TokenAuthentication, ])
+# @permission_classes([IsAuthenticated, ])
 def like_post(request, post_slug, action):
     print(request.user)
     post = Post.objects.get(post_slug=post_slug)
