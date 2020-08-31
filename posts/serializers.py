@@ -56,7 +56,7 @@ class CreatePostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         print(validated_data)
         education_data = validated_data.pop('education')
-        education = Education.objects.get(**education_data)
+        education, created = Education.objects.get_or_create(**education_data)
         post = Post.objects.create(
             user=validated_data['user'],
             post_slug=validated_data['post_slug'],
