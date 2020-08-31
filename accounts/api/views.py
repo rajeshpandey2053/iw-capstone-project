@@ -29,7 +29,7 @@ from .serializers import (UserRegisterSerializer,
                           )
 from .tokens import account_activation_token
 from accounts.models import UserFollow
-
+from accounts.models.profile import Profile
 User = get_user_model()
 
 
@@ -50,6 +50,8 @@ class UserDetail(RetrieveAPIView):
         followers = UserFollow.objects.filter(follow_to=user).count()
         following = UserFollow.objects.filter(follow_by=user).count()
         user_data = UserRegisterSerializer(user)
+        profile = Profile.objects.get(user=request.user)
+        print(profile)
         context = {
             'user': user_data.data,
             'followers': followers,

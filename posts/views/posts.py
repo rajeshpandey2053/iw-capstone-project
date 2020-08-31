@@ -16,6 +16,7 @@ from ..serializers import (PostSerializer, CreatePostSerializer)
 from ..paginations import CustomPostsPagination
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from accounts.models.profile import Profile
 
 
 class ListPosts(ListAPIView):
@@ -109,11 +110,12 @@ class RetrieveDeletePost(RetrieveDestroyAPIView):
 
 
 @api_view(['POST'])
-# @authentication_classes([TokenAuthentication, ])
-# @permission_classes([IsAuthenticated, ])
+@authentication_classes([TokenAuthentication, ])
+@permission_classes([IsAuthenticated, ])
 def like_post(request, post_slug, action):
     print(request.user)
     post = Post.objects.get(post_slug=post_slug)
+    profile = Profile.objects.get(user=request.user)
     try:
         print(post)
     except post.model.DoesNotExist:
@@ -122,10 +124,12 @@ def like_post(request, post_slug, action):
 
     if request.method == 'POST':
         if action == 'like':
+            profile.post.add(post)
             post.stars_count += 1
             print(post.stars_count)
             post.save()
         elif action == 'unlike':
+            profile.post.remove(post)
             post.stars_count -= 1
             if post.stars_count <= 0:
                 post.stars_count = 0

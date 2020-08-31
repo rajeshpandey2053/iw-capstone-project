@@ -39,6 +39,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'contact_number',
             'address',
             'education',
+            'post',
         ]
 
 
@@ -114,7 +115,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'profile_pic', 'profile')
+        fields = ('username', 'email', 'first_name',
+                  'last_name', 'profile_pic', 'profile')
 
     def update(self, instance, validated_data):
         """updating profile and education while updating user"""
@@ -180,13 +182,15 @@ class SetNewPasswordSerializer(serializers.Serializer):
             user = User.objects.get(id=id)
             """check whether token is valid or not """
             if not PasswordResetTokenGenerator().check_token(user, token):
-                raise AuthenticationFailed('The reset link is invalid', status.HTTP_401_UNAUTHORIZED)
+                raise AuthenticationFailed(
+                    'The reset link is invalid', status.HTTP_401_UNAUTHORIZED)
             user.set_password(password)
             user.save()
             return user
 
         except Exception:
-            raise AuthenticationFailed('The reset link is invalid', status.HTTP_401_UNAUTHORIZED)
+            raise AuthenticationFailed(
+                'The reset link is invalid', status.HTTP_401_UNAUTHORIZED)
 
         return super().validate(attrs)
 
@@ -198,8 +202,8 @@ class UserFollowSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         try:
-            UserFollow.objects.get(follow_to=attrs['follow_to'], follow_by=attrs['follow_by'])
+            UserFollow.objects.get(
+                follow_to=attrs['follow_to'], follow_by=attrs['follow_by'])
             raise serializers.ValidationError('You already Followed him')
         except UserFollow.DoesNotExist:
             return attrs
-
