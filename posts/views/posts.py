@@ -45,7 +45,6 @@ class CreatePost(CreateAPIView):
         The original function overridden so that the post slug is generated
         automatically and is unique.
         """
-        import json
         data = request.data.copy()
         # copying the dict because the original QueryDict is immutable.
         print("purano data", data)
@@ -72,6 +71,27 @@ class UpdatePost(UpdateAPIView):
 
     def get_queryset(self):
         return Post.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        data = request.data.copy()
+        # copying the dict because the original QueryDict is immutable.
+        print("purano data", data)
+        data[
+            'post_slug'] = f'{slugify(data["caption"][:10])}-{uuid.uuid4().hex}'
+
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
 
 class RetrieveDeletePost(RetrieveDestroyAPIView):
@@ -120,7 +140,7 @@ def like_post(request, post_slug, action):
                     status=status.HTTP_400_BAD_REQUEST)
 
 
-class FollowedPosts(ListAPIView):
+class FollowedPosts(ListPosts):
     """
     This is the view that returns the list of posts that are followed by the
     person.
