@@ -38,11 +38,20 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class CreatePostSerializer(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
     education = PostEducationSerialzer()
 
     class Meta:
         model = Post
-        fields = ['user', 'post_slug', 'caption', 'file', 'education']
+        fields = ['user', 'post_slug', 'caption', 'file',
+                  'education', 'posted_at', 'modified_at', "user_name"]
+
+        read_only_fields = ['user_name', 'posted_at', 'modified_at']
+
+    @staticmethod
+    def get_user_name(obj):
+        user = USER.objects.get(email=obj.user)
+        return user.username
 
     def create(self, validated_data):
         print(validated_data)
@@ -77,7 +86,7 @@ class CreateCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['post', 'user', 'comment_description', 'commented_at',
-                  'comment_modified_at', 'stars_count', 'id', 'user_name']
+                  'comment_modified_at', 'stars_count', 'user_name', 'id']
         read_only_fields = ['stars_count', 'id', 'user_name']
 
     @staticmethod

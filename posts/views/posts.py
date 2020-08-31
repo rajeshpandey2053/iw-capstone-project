@@ -154,3 +154,7 @@ class FollowedPosts(ListPosts):
 
     def get_queryset(self):
         return Post.objects.all()
+# <QueryDict: {'user': ['1'], 'post_slug': ['dfdf'], 'caption': ['updateing through browsable api'], 'education.university': ['1'], 'education.semester': ['2'], 'education.faculty': ['1'], 'file': [ < InMemoryUploadedFile: Wolf (2018) [WEBRip] [1080p] [YTS.LT].torrent (application/x-bittorrent) > ]} >
+
+
+# <QueryDict: {'user': ['1'], 'file': ['http://127.0.0.1:8000/posts/files/Voice0288_ep8slDk.aac'], 'post_slug': ['post_slug'], 'caption': ['check reponse of this post and update'], 'education.semester': ['90'], 'education.faculty': ['1'], 'education.university': ['1']}>
