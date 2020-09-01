@@ -17,6 +17,9 @@ from ..paginations import CustomPostsPagination
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from accounts.models.profile import Profile
+from django.contrib.auth import get_user_model
+
+USER = get_user_model()
 
 
 class ListPosts(ListAPIView):
@@ -51,7 +54,9 @@ class CreatePost(CreateAPIView):
         print("purano data", data)
         data[
             'post_slug'] = f'{slugify(data["caption"][:10])}-{uuid.uuid4().hex}'
-        print(data)
+        user = USER.objects.get(email=request.user)
+        print(user.id)
+        data["user"] = user.id
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -67,8 +72,8 @@ class UpdatePost(UpdateAPIView):
     lookup_field = 'post_slug'
     lookup_url_kwarg = 'post_slug'
     serializer_class = CreatePostSerializer
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [IsAuthenticated, ]
+    # authentication_classes = [TokenAuthentication, ]
+    # permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         return Post.objects.all()
@@ -79,7 +84,9 @@ class UpdatePost(UpdateAPIView):
         print("purano data", data)
         data[
             'post_slug'] = f'{slugify(data["caption"][:10])}-{uuid.uuid4().hex}'
-
+        user = USER.objects.get(email=request.user)
+        print(user.id)
+        data["user"] = user.id
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(

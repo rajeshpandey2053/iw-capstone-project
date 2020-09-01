@@ -3,15 +3,31 @@ from .models import Comment, Post
 from django.contrib.auth import get_user_model
 from accounts.api.serializers import EducationSerializer
 from accounts.models.education import Education
+from accounts.models.education import Faculty
+from accounts.models.education import University
 
 USER = get_user_model()
 
 
 class PostEducationSerialzer(serializers.ModelSerializer):
+    university_name = serializers.SerializerMethodField()
+    faculty_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Education
-        fields = ['university', "semester", "faculty"]
+        fields = ['university', "semester", "faculty",
+                  "college", "university_name", "faculty_name"]
+        read_only_fields = ["university_name", "faculty_name"]
+
+    @staticmethod
+    def get_university_name(obj):
+        uni = University.objects.get(uni_short_form=obj.university)
+        return uni.university_name
+
+    @staticmethod
+    def get_faculty_name(obj):
+        uni = Faculty.objects.get(fac_short_form=obj.faculty)
+        return uni.faculty_name
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -87,7 +103,8 @@ class CreateCommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['post', 'user', 'comment_description', 'commented_at',
                   'comment_modified_at', 'stars_count', 'user_name', 'id']
-        read_only_fields = ['stars_count', 'id', 'user_name']
+        read_only_fields = ['stars_count', 'id',
+                            'user_name', 'commented_at', 'comment_modified_at']
 
     @staticmethod
     def get_user_name(obj):
