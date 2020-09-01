@@ -74,10 +74,10 @@ class CreatePostSerializer(serializers.ModelSerializer):
         education_data = validated_data.pop('education')
         education, created = Education.objects.get_or_create(**education_data)
         post = Post.objects.create(
-            user=validated_data['user'],
-            post_slug=validated_data['post_slug'],
-            caption=validated_data['caption'],
-            file=validated_data['file'],
+            user=validated_data.get("user"),
+            post_slug=validated_data.get('post_slug'),
+            caption=validated_data.get('caption'),
+            file=validated_data.get('file'),
             education=education
         )
         return post
@@ -85,13 +85,13 @@ class CreatePostSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         print(validated_data)
         education_data = validated_data.pop('education')
-        instance.user = validated_data['user']
-        instance.post_slug = validated_data['post_slug']
-        instance.caption = validated_data['caption']
-        instance.file = validated_data['file']
-        instance.education.semester = education_data['semester']
-        instance.education.faculty = education_data['faculty']
-        instance.education.university = education_data['university']
+        instance.user = validated_data.get('user')
+        instance.post_slug = validated_data.get('post_slug')
+        instance.caption = validated_data.get('caption')
+        instance.file = validated_data.get('file')
+        instance.education.semester = education_data.get('semester')
+        instance.education.faculty = education_data.get('faculty')
+        instance.education.university = education_data.get('university')
         instance.save()
         return instance
 

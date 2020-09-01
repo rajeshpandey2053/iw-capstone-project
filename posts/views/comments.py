@@ -57,6 +57,8 @@ class RetrieveDeleteComment(RetrieveDestroyAPIView):
 
 
 @api_view(['POST'])
+@authentication_classes([TokenAuthentication, ])
+@permission_classes([IsAuthenticated, ])
 def like_comment(request, pk, action):
     comment = Comment.objects.get(pk=pk)
     try:
