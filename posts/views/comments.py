@@ -27,8 +27,8 @@ class CreateComment(CreateAPIView):
     """
     This creates a new comment and saves to the database.
     """
-    # authentication_classes = [TokenAuthentication, ]
-    # permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
     serializer_class = CreateCommentSerializer
 
 
