@@ -55,8 +55,8 @@ class CreatePost(CreateAPIView):
         data[
             'post_slug'] = f'{slugify(data["caption"][:10])}-{uuid.uuid4().hex}'
         user = USER.objects.get(email=request.user)
-        print(user.id)
         data["user"] = user.id
+        print(data)
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -72,8 +72,8 @@ class UpdatePost(UpdateAPIView):
     lookup_field = 'post_slug'
     lookup_url_kwarg = 'post_slug'
     serializer_class = CreatePostSerializer
-    # authentication_classes = [TokenAuthentication, ]
-    # permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         return Post.objects.all()
@@ -161,7 +161,3 @@ class FollowedPosts(ListPosts):
 
     def get_queryset(self):
         return Post.objects.all()
-# <QueryDict: {'user': ['1'], 'post_slug': ['dfdf'], 'caption': ['updateing through browsable api'], 'education.university': ['1'], 'education.semester': ['2'], 'education.faculty': ['1'], 'file': [ < InMemoryUploadedFile: Wolf (2018) [WEBRip] [1080p] [YTS.LT].torrent (application/x-bittorrent) > ]} >
-
-
-# <QueryDict: {'user': ['1'], 'file': ['http://127.0.0.1:8000/posts/files/Voice0288_ep8slDk.aac'], 'post_slug': ['post_slug'], 'caption': ['check reponse of this post and update'], 'education.semester': ['90'], 'education.faculty': ['1'], 'education.university': ['1']}>
