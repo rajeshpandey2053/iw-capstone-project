@@ -18,6 +18,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from accounts.models.profile import Profile
 from django.contrib.auth import get_user_model
+from rest_framework.filters import SearchFilter
 
 USER = get_user_model()
 
@@ -31,6 +32,10 @@ class ListPosts(ListAPIView):
     pagination_class = CustomPostsPagination
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
+    filter_backends = [SearchFilter, ]
+    search_fields = ['caption', 'post_slug', 'education__semester',
+                     'education__university__university_name',
+                     'education__university__id']
 
     def get_queryset(self):
         return Post.objects.all()
