@@ -20,7 +20,22 @@ from accounts.models.profile import Profile
 from django.contrib.auth import get_user_model
 from rest_framework.filters import SearchFilter
 
+from django_filters import rest_framework as filters
+
 USER = get_user_model()
+
+
+class FilterPost(filters.FilterSet):
+    university = filters.CharFilter(field_name='education__university')
+    semester = filters.CharFilter(field_name='education__semester')
+    faculty = filters.CharFilter(field_name='education__faculty')
+
+    class Meta:
+        model = Post
+        fields = ['id', 'caption', 'post_slug', 'university', 'semester',
+                  'faculty']
+
+
 
 
 class ListPosts(ListAPIView):
@@ -32,10 +47,14 @@ class ListPosts(ListAPIView):
     pagination_class = CustomPostsPagination
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
-    filter_backends = [SearchFilter, ]
+    filter_backends = [SearchFilter, filters.DjangoFilterBackend]
     search_fields = ['caption', 'post_slug', 'education__semester',
                      'education__university__university_name',
                      'education__university__id']
+    # filterset_fields = ['caption', 'education__university__id', 'id',
+    #                     'post_slug', 'education__faculty_id',
+    #                     'education__semester']
+    filterset_class = FilterPost
 
     def get_queryset(self):
         return Post.objects.all()
@@ -95,7 +114,7 @@ class UpdatePost(UpdateAPIView):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(
-            instance, data=data, partial=partial)
+                instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 

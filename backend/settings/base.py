@@ -35,6 +35,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'django_filters',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + SYSTEM_APPS + THIRD_PARTY_APPS
@@ -132,6 +133,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # email settings
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
