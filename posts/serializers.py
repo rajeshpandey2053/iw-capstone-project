@@ -60,9 +60,9 @@ class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['user', 'post_slug', 'caption', 'file',
-                  'education', 'posted_at', 'modified_at', "user_name"]
+                  'education', 'posted_at', 'modified_at', "user_name", 'id']
 
-        read_only_fields = ['user_name', 'posted_at', 'modified_at']
+        read_only_fields = ['user_name', 'posted_at', 'modified_at', 'id']
 
     @staticmethod
     def get_user_name(obj):

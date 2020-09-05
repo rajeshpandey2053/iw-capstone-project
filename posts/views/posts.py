@@ -36,8 +36,6 @@ class FilterPost(filters.FilterSet):
                   'faculty']
 
 
-
-
 class ListPosts(ListAPIView):
     """
     This view is paginated to return a list of 15 posts at a time.
@@ -106,15 +104,13 @@ class UpdatePost(UpdateAPIView):
         data = request.data.copy()
         # copying the dict because the original QueryDict is immutable.
         print("purano data", data)
-        data[
-            'post_slug'] = f'{slugify(data["caption"][:10])}-{uuid.uuid4().hex}'
         user = USER.objects.get(email=request.user)
         print(user.id)
         data["user"] = user.id
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(
-                instance, data=data, partial=partial)
+            instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 

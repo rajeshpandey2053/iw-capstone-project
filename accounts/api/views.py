@@ -13,8 +13,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.generics import GenericAPIView
 from rest_framework.generics import (CreateAPIView,
+                                     ListAPIView,
                                      RetrieveAPIView,
                                      UpdateAPIView, DestroyAPIView, ListCreateAPIView)
+from accounts.models import University, Faculty
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
@@ -25,7 +27,8 @@ from .serializers import (UserRegisterSerializer,
                           UserUpdateSerializer,
                           ChangePasswordSerializer,
                           ResetPasswordEmailRequestSerializer,
-                          SetNewPasswordSerializer, UserFollowSerializer
+                          SetNewPasswordSerializer, UserFollowSerializer,
+                          FacultySerializer, UniversitySerializer
                           )
 from .tokens import account_activation_token
 from accounts.models import UserFollow
@@ -60,6 +63,35 @@ class UserDetail(RetrieveAPIView):
         return Response(context, status=status.HTTP_200_OK)
 
 
+class GetUserDetail(RetrieveAPIView):
+    """
+    API end point to retrieve the user object
+    who is currently active
+    """
+    lookup_field = 'id'
+    lookup_url_kwarg = 'id'
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request, *args, **kwargs):
+        """
+        returns the user detail
+        :return: JSON response of user detail
+        """
+        user = User.objects.get(id=kwargs[self.lookup_url_kwarg])
+        followers = UserFollow.objects.filter(follow_to=user).count()
+        following = UserFollow.objects.filter(follow_by=user).count()
+        user_data = UserRegisterSerializer(user)
+        profile = Profile.objects.get(user=request.user)
+        print(profile)
+        context = {
+            'user': user_data.data,
+            'followers': followers,
+            'following': following,
+        }
+        return Response(context, status=status.HTTP_200_OK)
+
+
 class UserUpdate(UpdateAPIView):
     """
     API end point to update the user object
@@ -71,7 +103,7 @@ class UserUpdate(UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         """partially updating the user"""
-
+        print(request.data)
         partial = kwargs.pop('partial', False)
         instance = User.objects.get(id=request.user.id)
         serializer = self.get_serializer(
@@ -280,10 +312,25 @@ class UserFollowAPIView(ListCreateAPIView):
         return follow
 
     def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        data = request.data.copy()
+        # copying the dict because the original QueryDict is immutable.
+        print("purano data", data)
+        data['follow_by'] = request.user.id
+        print(data)
+        serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         context = {
             'message': 'success',
         }
         return Response(context, status.HTTP_201_CREATED)
+
+
+class FacultyAPIView(ListAPIView):
+    queryset = Faculty.objects.all()
+    serializer_class = FacultySerializer
+
+
+class UniversityAPIView(ListAPIView):
+    queryset = University.objects.all()
+    serializer_class = UniversitySerializer
