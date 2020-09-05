@@ -4,15 +4,6 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class College(models.Model):
-    college_name = models.CharField(max_length=150)
-    college_short_form = models.CharField(
-        max_length=150, blank=False, null=True)
-
-    def __str__(self):
-        return self.college_short_form
-
-
 class University(models.Model):
     university_name = models.CharField(max_length=150)
     uni_short_form = models.CharField(max_length=150, blank=False, null=True)
@@ -30,12 +21,9 @@ class Faculty(models.Model):
 
 
 class Education(models.Model):
-    # SEMESTERS = [(1, 'semester 1'),(2,'semester 2'),(3,'semester 3'),(4,'semester 4'),(5,'semester 5'),(6,
-    # 'semester 6'),(7,'semester 7'),(8,'semester 8')] YEARS = [(1,'year 1'),(2,'year 2'),(3,'year 3'),(4,'year 4')]
     semester = models.CharField(max_length=100, blank=True, null=True)
     year = models.CharField(max_length=100)
-    college = models.ForeignKey(
-        College, related_name='education_college', on_delete=models.PROTECT)
+    college = models.CharField(max_length=200, blank=True, null=True)
     faculty = models.ForeignKey(
         Faculty, related_name='education_faculty', on_delete=models.PROTECT)
     university = models.ForeignKey(
