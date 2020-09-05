@@ -41,6 +41,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'education',
             'post'
         ]
+        read_only_fields = ['post', ]
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
