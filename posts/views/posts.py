@@ -106,8 +106,8 @@ class UpdatePost(UpdateAPIView):
         data = request.data.copy()
         # copying the dict because the original QueryDict is immutable.
         print("purano data", data)
-        data[
-            'post_slug'] = f'{slugify(data["caption"][:10])}-{uuid.uuid4().hex}'
+        # data[
+        #     'post_slug'] = f'{slugify(data["caption"][:10])}-{uuid.uuid4().hex}'
         user = USER.objects.get(email=request.user)
         print(user.id)
         data["user"] = user.id
