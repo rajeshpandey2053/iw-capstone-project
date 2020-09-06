@@ -125,11 +125,11 @@ class UserRegistrationView(CreateAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        current_site = get_current_site(self.request)
+        # current_site = get_current_site(self.request)
         mail_subject = "Activate your Hamro Note Account"
         message = render_to_string('account_activate_email.html', {
             'user': user,
-            'domain': current_site.domain,
+            'domain': 'localhost:3000',
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': account_activation_token.make_token(user)
         })
@@ -166,7 +166,7 @@ def activate(request, uidb64, token):
             'status': 'Failed',
             'message': "Either the token is expired or you are not registered yet"
         }
-        return Response(response, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(response, status=403)
 
 
 class UserLogoutView(DestroyAPIView):
