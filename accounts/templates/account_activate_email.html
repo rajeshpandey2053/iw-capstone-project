@@ -1,6 +1,3 @@
-{% autoescape off %}
-    HamroNote
-Hi {{ user.username }},
-Please click on the link to confirm your registration,
-http://{{ domain }}{% url 'accounts:user-activate' uidb64=uid token=token %}
-{% endautoescape %}
+{% autoescape off %} HamroNote Hi {{ user.username }}, Please click on the link
+to confirm your registration,<br />
+http://{{ domain }}/activate/{{uid}}/{{token}} {% endautoescape %}
