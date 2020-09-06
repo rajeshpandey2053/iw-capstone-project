@@ -12,6 +12,7 @@ from rest_framework.decorators import (api_view,
                                        permission_classes
                                        )
 from ..models import Post
+from accounts.models.follow import UserFollow
 from ..serializers import (PostSerializer, CreatePostSerializer)
 from ..paginations import CustomPostsPagination
 from rest_framework.authentication import TokenAuthentication
@@ -180,4 +181,6 @@ class FollowedPosts(ListPosts):
     pagination_class = CustomPostsPagination
 
     def get_queryset(self):
-        return Post.objects.all()
+        followed_people = UserFollow.objects.filter(
+            follow_by=self.request.user.id).values('follow_to')
+        return Post.objects.filter(user__in=followed_people).order_by('modified_at')
