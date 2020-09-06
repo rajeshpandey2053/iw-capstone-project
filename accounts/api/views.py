@@ -327,10 +327,14 @@ class UserFollowAPIView(ListCreateAPIView):
 
 
 class FacultyAPIView(ListAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
     queryset = Faculty.objects.all()
     serializer_class = FacultySerializer
 
 
 class UniversityAPIView(ListAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
     queryset = University.objects.all()
     serializer_class = UniversitySerializer
