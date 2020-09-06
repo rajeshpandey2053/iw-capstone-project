@@ -13,7 +13,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     education = models.ForeignKey(
         Education, related_name='profile_education', on_delete=models.PROTECT)
-    post = models.ManyToManyField(Post)
+    post = models.ManyToManyField(Post, blank=True)
 
     def __str__(self):
         return self.user.username
