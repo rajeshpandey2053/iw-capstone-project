@@ -16,6 +16,8 @@ User = get_user_model()
 
 class EducationSerializer(serializers.ModelSerializer):
     """education model serializer"""
+    faculty_name = serializers.SerializerMethodField()
+    university_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Education
@@ -24,8 +26,23 @@ class EducationSerializer(serializers.ModelSerializer):
             'year',
             'college',
             'faculty',
-            'university'
+            'university',
+            'university_name',
+            'faculty_name'
         ]
+        read_only_fields = [
+            'university_name',
+            'faculty_name']
+
+    @staticmethod
+    def get_university_name(obj):
+        uni = University.objects.get(uni_short_form=obj.university)
+        return uni.university_name
+
+    @staticmethod
+    def get_faculty_name(obj):
+        uni = Faculty.objects.get(fac_short_form=obj.faculty)
+        return uni.faculty_name
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
