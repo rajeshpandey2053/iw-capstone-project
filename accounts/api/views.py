@@ -129,7 +129,7 @@ class UserRegistrationView(CreateAPIView):
         mail_subject = "Activate your Hamro Note Account"
         message = render_to_string('account_activate_email.html', {
             'user': user,
-            'domain': 'localhost:3000',
+            'domain': 'iw-acad-hamro-note-fe.vercel.app',
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': account_activation_token.make_token(user)
         })
@@ -236,7 +236,7 @@ class RequestPasswordResetEmail(GenericAPIView):
             #     'accounts:password-reset-confirm',
             #     kwargs={'uidb64': uidb64, 'token': token}
             # )
-            absurl = f'http://localhost:3000/new-password/{uidb64}/{token}' 
+            absurl = f'https://iw-acad-hamro-note-fe.vercel.app/new-password/{uidb64}/{token}'
             email_body = 'Hello, \n Use link below to reset your password  \n' + absurl
             data = {
                 'email_body': email_body,
