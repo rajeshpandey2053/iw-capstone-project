@@ -1,5 +1,6 @@
 from pathlib import Path
 from decouple import config
+import django_heroku
 
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -155,3 +156,5 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_SSL_REDIRECT = True
 '''
+
+django_heroku.settings(locals())
