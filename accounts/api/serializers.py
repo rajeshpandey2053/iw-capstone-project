@@ -78,12 +78,14 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         required=True,
         style={'input_type': 'password', 'placeholder': 'Confirm_Password'}
     )
+    user_id = serializers.CharField(source='profile.user.id')
 
     class Meta:
         model = User
         fields = (
             'username',
             'email',
+            'user_id',
             'first_name',
             'last_name',
             'password',

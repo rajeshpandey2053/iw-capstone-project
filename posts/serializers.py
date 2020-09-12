@@ -34,11 +34,12 @@ class PostSerializer(serializers.ModelSerializer):
     education = PostEducationSerialzer()
     user = serializers.PrimaryKeyRelatedField(queryset=USER.objects.all())
     user_name = serializers.CharField(source='user.username')
+    user_id = serializers.CharField(source='profile.user.id')
 
     class Meta:
         model = Post
-        fields = ["posted_at", "modified_at", "user", "post_slug",
-                  "caption", "file", "stars_count", "user_name", "id", 'education']
+        fields = ["posted_at", "modified_at", "user", 'user_id', "post_slug",
+                  "caption", "file", "stars_count", "user_name", "id"]
         read_only_fields = ['user_name', "id"]
 
 
