@@ -92,6 +92,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             'confirm_password',
             'profile'
         )
+        read_only_fields = ['user_id']
 
     def create(self, validated_data):
         """creating profile and education on creating user"""
