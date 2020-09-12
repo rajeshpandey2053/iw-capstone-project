@@ -183,4 +183,6 @@ class FollowedPosts(ListPosts):
     def get_queryset(self):
         followed_people = UserFollow.objects.filter(
             follow_by=self.request.user.id).values('follow_to')
-        return Post.objects.filter(user__in=followed_people).order_by('modified_at')
+        return (Post.objects.filter(user__in=followed_people).order_by(
+               'modified_at') | Post.objects.filter(
+               user=self.request.user).order_by('modified_at'))
