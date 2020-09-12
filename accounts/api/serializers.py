@@ -1,3 +1,4 @@
+from posts.models import USER
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_str
@@ -79,7 +80,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         required=True,
         style={'input_type': 'password', 'placeholder': 'Confirm_Password'}
     )
-    user_id = serializers.CharField(source='profile.user.id')
+    # user_id = serializers.CharField(source='profile.user.id')
+    user_id = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -94,6 +96,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             'profile'
         )
         read_only_fields = ['user_id',]
+
+    @staticmethod
+    def get_user_id(obj):
+        user = USER.objects.get(email=obj.email)
+        return user.id
 
     def create(self, validated_data):
         """creating profile and education on creating user"""
