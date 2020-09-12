@@ -54,11 +54,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = [
             'contact_number',
+            'profile_pic',
             'address',
             'education',
             'post'
         ]
-        read_only_fields = ['post', ]
+        read_only_fields = ['post', 'profile_pic']
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -92,6 +93,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             'confirm_password',
             'profile'
         )
+        read_only_fields = ['user_id',]
 
     def create(self, validated_data):
         """creating profile and education on creating user"""

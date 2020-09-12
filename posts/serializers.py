@@ -35,23 +35,25 @@ class PostSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=USER.objects.all())
     user_name = serializers.CharField(source='user.username')
     user_id = serializers.CharField(source='profile.user.id')
+    profile_img = serializers.ImageField(source='profile.profile_pic')
 
     class Meta:
         model = Post
-        fields = ["posted_at", "modified_at", "user", 'user_id', "post_slug",
+        fields = ["posted_at", "modified_at", "user", 'user_id', "post_slug", "profile_img",
                   "caption", "file", "stars_count", "user_name", "id"]
-        read_only_fields = ['user_name', "id"]
+        read_only_fields = ['user_name', "id", "user_id", 'profile_img']
 
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=USER.objects.all())
     user_name = serializers.CharField(source='user.username')
+    profile_img = serializers.ImageField(source='user.profile.profile_pic')
 
     class Meta:
         model = Comment
         fields = ['post', 'user', 'comment_description', 'commented_at',
                   'comment_modified_at', 'stars_count', 'user_name', 'id']
-        read_only_fields = ['user_name', 'id']
+        read_only_fields = ['user_name', 'id', 'profile_pic']
 
 
 class CreatePostSerializer(serializers.ModelSerializer):
