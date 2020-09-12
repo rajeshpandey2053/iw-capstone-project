@@ -59,6 +59,7 @@ class UserDetail(RetrieveAPIView):
             'user': user_data.data,
             'followers': followers,
             'following': following,
+            'user_id': request.user.id
         }
         return Response(context, status=status.HTTP_200_OK)
 
@@ -88,6 +89,7 @@ class GetUserDetail(RetrieveAPIView):
             'user': user_data.data,
             'followers': followers,
             'following': following,
+            'user_id': kwargs[self.lookup_url_kwarg],
         }
         return Response(context, status=status.HTTP_200_OK)
 
