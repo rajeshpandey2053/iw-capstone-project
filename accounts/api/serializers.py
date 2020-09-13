@@ -1,3 +1,4 @@
+from posts.models import USER
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_str
@@ -54,11 +55,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = [
             'contact_number',
+            'profile_pic',
             'address',
             'education',
             'post'
         ]
-        read_only_fields = ['post', ]
+        read_only_fields = ['post', 'profile_pic']
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):

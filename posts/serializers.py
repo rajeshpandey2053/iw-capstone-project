@@ -1,3 +1,5 @@
+from accounts.models.profile import Profile
+from accounts.models import profile
 from rest_framework import serializers
 from .models import Comment, Post
 from django.contrib.auth import get_user_model
@@ -33,24 +35,37 @@ class PostEducationSerialzer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     education = PostEducationSerialzer()
     user = serializers.PrimaryKeyRelatedField(queryset=USER.objects.all())
-    user_name = serializers.CharField(source='user.username')
+    profile_img = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ["posted_at", "modified_at", "user", "post_slug",
-                  "caption", "file", "stars_count", "user_name", "id", 'education']
-        read_only_fields = ['user_name', "id"]
+        fields = ["posted_at", "modified_at", "user", "post_slug", "profile_img",
+                  "caption", "file", "stars_count", "user_name", "id"]
+        read_only_fields = ['user_name', "id", 'profile_img']
 
+    @staticmethod
+    def get_profile_img(obj):
+        profile = Profile.objects.get(user=obj.user)
+        return profile.profile_pic
 
+      
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=USER.objects.all())
     user_name = serializers.CharField(source='user.username')
+    # profile_img = serializers.ImageField(source='user.profile.profile_pic')
+    profile_img = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
         fields = ['post', 'user', 'comment_description', 'commented_at',
                   'comment_modified_at', 'stars_count', 'user_name', 'id']
-        read_only_fields = ['user_name', 'id']
+        read_only_fields = ['user_name', 'id', 'profile_pic']
+
+    @staticmethod
+    def get_profile_img(obj):
+        profile = Profile.objects.get(user=obj.user)
+        return profile.profile_pic
+
 
 
 class CreatePostSerializer(serializers.ModelSerializer):
