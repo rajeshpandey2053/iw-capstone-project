@@ -80,27 +80,18 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         required=True,
         style={'input_type': 'password', 'placeholder': 'Confirm_Password'}
     )
-    # user_id = serializers.CharField(source='profile.user.id')
-    user_id = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = (
             'username',
             'email',
-            'user_id',
             'first_name',
             'last_name',
             'password',
             'confirm_password',
             'profile'
         )
-        read_only_fields = ['user_id',]
-
-    @staticmethod
-    def get_user_id(obj):
-        user = USER.objects.get(email=obj.email)
-        return user.id
 
     def create(self, validated_data):
         """creating profile and education on creating user"""
