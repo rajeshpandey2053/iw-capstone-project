@@ -35,6 +35,7 @@ class PostEducationSerialzer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     education = PostEducationSerialzer()
     user = serializers.PrimaryKeyRelatedField(queryset=USER.objects.all())
+    user_name = serializers.CharField(source='user.username')
 
     class Meta:
         model = Post
